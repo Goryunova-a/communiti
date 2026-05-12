@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Контакты | COMMUNITI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Montserrat Alternates', sans-serif;
+      background: #d7e0b5;
+      color: #101010;
+      overflow-x: hidden;
+    }
+header {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 320px;
+  max-width: 600px;
+  width: calc(100% - 40px); /* 40px = 20px отступ слева и справа */
+  background: linear-gradient(135deg, #333437, #343537);
+  border-radius: 50px;
+  padding: 8px 0;
+  z-index: 1000;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap; /* ← запрещаем перенос строк */
+  padding: 0 20px;
+  overflow-x: auto; /* ← позволяет прокручивать на узких экранах */
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  white-space: nowrap; /* ← запрещаем перенос текста в ссылке */
+}
+
+.nav a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ff7b00;
+  border-radius: 30px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+  z-index: -1;
+}
+
+.nav a.active::before,
+.nav a:hover::before {
+  transform: scaleX(1);
+}
+
+.nav a span {
+  position: relative;
+  z-index: 2;
+}
+
+
+
+    /* === БЛОК "КОНТАКТЫ" === */
+.contacts-section {
+  min-height: 750px;
+  padding-top: 60px;
+  position: relative;
+  background: url('services-bg.svg') center/cover no-repeat;
+  background-color: #5a614c00;
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  z-index: 1;
+}
+
+.section-content {
+  position: relative;
+  z-index: 2;
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  text-align: center;
+  color: rgb(16, 2, 2);
+  margin-bottom: 40px;
+}
+
+.section-title h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.section-title p {
+  font-size: 20px;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* === ОСНОВНАЯ КАРТОЧКА С КОНТАКТНОЙ ИНФОРМАЦИЕЙ === */
+.contact-card {
+  display: flex;
+  gap: 30px;
+  margin-top: 40px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.contact-left, .contact-right {
+  flex: 1;
+  padding: 40px;
+  background: #8c6a48; /* Коричневый фон */
+  color: white;
+}
+
+.contact-left h2, .contact-right h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.contact-left h2 .orange, .contact-right h2 .orange {
+  color: #ff7b00;
+  font-weight: 700;
+}
+
+.contact-left h2 {
+  color: #000;
+}
+
+.contact-right h2 {
+  color: #000;
+}
+
+.contact-info {
+  line-height: 1.8;
+}
+
+.contact-info p {
+  margin: 12px 0;
+  font-size: 20px;
+}
+
+.contact-info a {
+  color: #ff7b00;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+.contact-right p {
+  font-size: 20px;
+  opacity: 0.9;
+  margin-bottom: 30px;
+}
+
+/* === ФОРМА === */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-form input {
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.contact-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.contact-form button {
+  background: #ff7b00;
+  color: #1f2937;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.contact-form button:hover {
+  background: #e69500;
+  transform: translateY(-2px);
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 768px) {
+  .contact-card {
+    flex-direction: column;
+  }
+  
+  .contact-left, .contact-right {
+    padding: 32px;
+  }
+
+  .contact-left h2, .contact-right h2 {
+    font-size: 28px;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+    <!-- 1. Кнопка бургера (только для мобильных) -->
+  <div class="new-burger-btn" id="newBurger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- 2. Само меню (выезжает слева) -->
+  <div class="new-mobile-menu" id="newMobileMenu">
+    <a href="index.html">Главная</a>
+    <a href="services.html">Услуги</a>
+    <a href="cases.html">Кейсы</a>
+    <a href="calculator.html">Калькулятор</a>
+    <a href="about.html">О нас</a>
+    <a href="contacts.html">Контакты</a>
+    <!-- Кнопка Аудит -->
+    <button class="menu-audit-btn" onclick="document.getElementById('auditModal').style.display='flex'">АУДИТ</button>
+  </div>
+  
+  <header>
+    <div class="nav">
+      <a href="index.html">Главная</a>
+      <a href="services.html">Услуги</a>
+      <a href="cases.html">Кейсы</a>
+      <a href="calculator.html">Калькулятор</a>
+      <a href="about.html">О нас</a>
+      <a href="#" class="active">Контакты</a>
+    </div>
+  </header>
+
+<section id="contacts" class="contacts-section">
+  <div class="section-content">
+    <!-- Заголовок -->
+    <div class="section-title">
+      <h1>Контакты</h1>
+      <p>Свяжитесь с нами — ответим в течение 15 минут</p>
+    </div>
+
+    <!-- Основная карточка с контактной информацией -->
+    <div class="contact-card">
+      <!-- Левая часть -->
+      <div class="contact-left">
+        <h2>Всегда <span class="orange">на связи</span></h2>
+        <div class="contact-info">
+          <div class="contact-item">
+            <h3>Контактная информация</h3>
+            
+            <p><a href="tel:+79041621642">+7 (904) 162 16 42</a></p>
+          </div>
+          
+          <div class="contact-item">
+            
+            <p><a href="https://vk.com/your_community">Группа в VK</a></p>
+          </div>
+          
+          <div class="contact-item">
+            
+            <p><a href="https://t.me/your_telegram">Telegram</a></p>
+          </div>
+          
+          <!-- РАБОЧИЕ ЧАСЫ -->
+          <div class="contact-item">
+            <h3>Рабочее время</h3>
+            <p>Пн-Пт: 9:00-19:00<br>Сб-Вс: выходные</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Правая часть -->
+      <div class="contact-right">
+        <h2>Мы <span class="orange">перезвоним</span></h2>
+        <p>Просто оставьте номер</p>
+        
+        <form class="contact-form">
+          <input type="text" placeholder="Имя" required>
+          <input type="tel" placeholder="Номер" required>
+          <button type="submit" class="btn-submit">Оставить заявку</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
+<script>
+// === НОВЫЙ БУРГЕР ===
+const burgerBtn = document.getElementById('newBurger');
+const mobileMenu = document.getElementById('newMobileMenu');
+
+if (burgerBtn && mobileMenu) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+  });
+
+  // Закрывать меню при клике на ссылку
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      burgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+    });
+  });
+}
+</script>
+</body>
+
+</html>
