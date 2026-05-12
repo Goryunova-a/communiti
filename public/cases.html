@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Кейсы | COMMUNITI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat Alternates', sans-serif;
+      background: #d7e0b5;
+      color: #101010;
+      overflow-x: hidden;
+    }
+
+header {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 320px;
+  max-width: 600px;
+  width: calc(100% - 40px); /* 40px = 20px отступ слева и справа */
+  background: linear-gradient(135deg, #333437, #343537);
+  border-radius: 50px;
+  padding: 8px 0;
+  z-index: 1000;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap; /* ← запрещаем перенос строк */
+  padding: 0 20px;
+  overflow-x: auto; /* ← позволяет прокручивать на узких экранах */
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  white-space: nowrap; /* ← запрещаем перенос текста в ссылке */
+}
+
+.nav a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ff7b00;
+  border-radius: 30px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+  z-index: -1;
+}
+
+.nav a.active::before,
+.nav a:hover::before {
+  transform: scaleX(1);
+}
+
+.nav a span {
+  position: relative;
+  z-index: 2;
+}
+
+/* === КНОПКА АУДИТ В ПРАВОМ ВЕРХНЕМ УГЛУ СТРАНИЦЫ === */
+.audit-btn {
+  position: fixed;
+  top: 12px;
+  right: 20px;
+  background: #ff7b00;
+  color: #1f2937;
+  border: none;
+  padding: 8px 30px;
+  border-radius: 30px;
+  font-weight: 900;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1001;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
+}
+
+.audit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 123, 0, 0.5);
+}
+
+/* === МОДАЛЬНОЕ ОКНО === */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  width: 100%;
+  max-width: 500px;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: #333;
+  font-size: 28px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  color: #ff7b00;
+  transform: scale(1.2);
+}
+
+.modal h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+  color: #000;
+}
+
+.modal p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+/* === ФОРМА ЗАЯВКИ === */
+.audit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #f5f5f5;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.3);
+}
+
+.btn-submit {
+  background: #ff7b00;
+  color: #1f2937;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-submit:hover {
+  background: #ff7b00;
+  transform: translateY(-2px);
+}
+
+.form-note {
+  font-size: 12px;
+  color: #777;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 30px 20px;
+  }
+  
+  .modal h2 {
+    font-size: 24px;
+  }
+  
+  .modal p {
+    font-size: 14px;
+  }
+}
+
+    /* === СЕКЦИЯ КЕЙСЫ — ВСЯ НА ВАШЕМ ИЗОБРАЖЕНИИ === */
+    .cases-section {
+      min-height: 100vh;
+      background: url('cases-bg.svg') center/cover no-repeat;
+      position: relative;
+      padding-top: 60px;
+    }
+    .cases-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0);
+    }
+    .cases-content {
+      position: relative;
+      z-index: 2;
+      padding: 80px 20px;
+    }
+    .cases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px; /* ← ключевая строка: ограничивает общую ширину */
+  margin: 40px auto; /* центрирует и добавляет отступ сверху */
+  padding: 0 20px; /* ← отступы слева/справа, чтобы не прилипали к краям */
+}
+    .section-title {
+      text-align: center;
+      color: white;
+      margin-bottom: 100px;
+    }
+    .section-title h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .section-title p {
+      font-size: 18px;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+
+/* === КАРТОЧКИ КЕЙСОВ — ЧИСТЫЙ ФИКС === */
+.case {
+  background: rgba(255, 255, 255, 0.95); /* светлый фон — ВАЖНО! */
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  position: relative; /* ← чтобы внутренние элементы не выходили за границы */
+}
+.case:hover {
+  background: #ff7b00;
+  box-shadow: 0 10px 30px rgba(255, 165, 0, 0.3);
+}
+.case .case-img {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  color: #ff7b00;
+  background: #f8f9fa; /* фон под иконкой — чтобы не было "дыр" */
+}
+.case:hover .case-img {
+  color: white;
+}
+.case-content {
+  padding: 24px;
+  flex-grow: 1;
+}
+.case h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #212529;
+  font-weight: 700;
+}
+.case:hover h3 {
+  color: white;
+}
+.case p,
+.case .case-meta {
+  color: #6c757d;
+  line-height: 1.6;
+}
+.case:hover p,
+.case:hover .case-meta {
+  color: rgba(255, 255, 255, 0.95);
+}
+.btn {
+  background: #ff7b00;
+  color: #1f2937;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s;
+}
+.case:hover .btn {
+  background: #ff7b00;
+  color: white;
+}
+.case {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+.case:hover {
+  background: #ff7b00;
+  box-shadow: 0 10px 30px rgba(255, 123, 0, 0.3);
+}
+.case .case-img {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  color: #ff7b00;
+  background: #f8f9fa;
+}
+.case:hover .case-img {
+  color: white;
+}
+.case-content {
+  padding: 24px;
+  flex-grow: 1;
+}
+.case h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #212529;
+  font-weight: 700;
+}
+.case:hover h3 {
+  color: white;
+}
+.case p,
+.case .case-meta {
+  color: #6c757d;
+  line-height: 1.6;
+}
+.case:hover p,
+.case:hover .case-meta {
+  color: rgba(255, 255, 255, 0.95);
+}
+.btn {
+  background: #ff7b00;
+  color: #1f2937;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s;
+}
+.case:hover .btn {
+  background: #ff7b00;
+  color: white;
+}
+.case {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+.case:hover {
+  background: #ff7b00;
+  box-shadow: 0 10px 30px rgba(255, 123, 0, 0.3);
+}
+.case .case-img {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  color: #ff7b00;
+  background: #f8f9fa;
+}
+.case:hover .case-img {
+  color: white;
+}
+.case-content {
+  padding: 24px;
+  flex-grow: 1;
+}
+.case h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #212529;
+  font-weight: 700;
+}
+.case:hover h3 {
+  color: white;
+}
+.case p,
+.case .case-meta {
+  color: #6c757d;
+  line-height: 1.6;
+}
+.case:hover p,
+.case:hover .case-meta {
+  color: rgba(255, 255, 255, 0.95);
+}
+.btn {
+  background: #ff7b00;
+  color: #1f2937;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s;
+}
+.case:hover .btn {
+  background: #ff7b00;
+  color: white;
+}
+  </style>
+</head>
+<body>
+<!-- КНОПКА АУДИТ В ПРАВОМ ВЕРХНЕМ УГЛУ СТРАНИЦЫ -->
+<button id="audit-btn" class="audit-btn">АУДИТ</button>
+
+<!-- МОДАЛЬНОЕ ОКНО С ФОРМОЙ ЗАЯВКИ -->
+<div id="audit-modal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close">&times;</span>
+    <h2>Заказать аудит</h2>
+    <p>Оставьте заявку, и мы свяжемся с вами в течение 15 минут</p>
+    
+    <form class="audit-form">
+      <div class="form-group">
+        <input type="text" placeholder="Ваше имя" required>
+      </div>
+      <div class="form-group">
+        <input type="tel" placeholder="Ваш телефон" required>
+      </div>
+      <button type="submit" class="btn-submit">Заказать аудит</button>
+      <p class="form-note">Нажимая кнопку, вы даете согласие на обработку персональных данных</p>
+    </form>
+  </div>
+</div>
+
+  <header>
+    <div class="nav">
+      <a href="index.html">Главная</a>
+      <a href="services.html">Услуги</a>
+      <a href="#" class="active">Кейсы</a>
+      <a href="calculator.html">Калькулятор</a>
+      <a href="about.html">О нас</a>
+      <a href="contacts.html">Контакты</a>
+    </div>
+  </header>
+
+  <!-- КЕЙСЫ -->
+<section id="cases" class="cases-section section">
+  <div class="section-content">
+    <div class="section-title">
+      <h1>Наши кейсы</h1>
+      <p>Результаты, которые мы достигли для клиентов</p>
+    </div>
+
+    <div class="cases-grid">
+      <div class="case">
+        <div class="case-img" style="background: url('case1.jpg') center/cover no-repeat; height: 180px;"></div>
+        <div class="case-content">
+          <h3>Массажный салон</h3>
+          <p>Привлечение заявок на услуги массажа и эпиляции.</p>
+          <div class="case-meta">
+            <span>Каналы: Instagram</span>
+          </div>
+          <button class="btn">Подробнее</button>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-img" style="background: url('case2.jpg') center/cover no-repeat; height: 180px;"></div>
+        <div class="case-content">
+          <h3>Сеть стоматологий</h3>
+          <p>+115% лидов за 2 месяца за счёт автопоронок и email-маркетинга.</p>
+          <div class="case-meta">
+            <span>Каналы: VK, Telegram, Яндекс.Дзен</span>
+          </div>
+          <button class="btn">Подробнее</button>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-img" style="background: url('case3.jpg') center/cover no-repeat; height: 180px;"></div>
+        <div class="case-content">
+          <h3>Фитнес-центр</h3>
+          <p>Выход в ТОП App Store и +80% подписок за 1 месяц.</p>
+          <div class="case-meta">
+            <span>Каналы: ASO, YouTube, TikTok</span>
+          </div>
+          <button class="btn">Подробнее</button>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-img" style="background: url('case4.jpg') center/cover no-repeat; height: 180px;"></div>
+        <div class="case-content">
+          <h3>Лендинг-агентство</h3>
+          <p>Запуск 12 лендингов за 30 дней. Конверсия от 8.2% — выше среднего.</p>
+          <div class="case-meta">
+            <span>Каналы: Google Ads, Яндекс.Директ</span>
+          </div>
+          <button class="btn">Подробнее</button>
+        </div>
+      </div>
+
+      <div class="case">
+        <div class="case-img" style="background: url('case5.jpg') center/cover no-repeat; height: 180px;"></div>
+        <div class="case-content">
+          <h3>Образовательная платформа</h3>
+          <p>+200% продаж курсов за 4 месяца через email-автоматизацию.</p>
+          <div class="case-meta">
+            <span>Каналы: YouTube, Telegram, Push</span>
+          </div>
+          <button class="btn">Подробнее</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<section>
+<script>
+// Обработчик кнопки "Аудит"
+document.addEventListener('DOMContentLoaded', function() {
+  const auditBtn = document.getElementById('audit-btn');
+  const auditModal = document.getElementById('audit-modal');
+  const closeModal = document.querySelector('.modal-close');
+  
+  // Показать модальное окно при нажатии на кнопку "Аудит"
+  auditBtn.addEventListener('click', function() {
+    auditModal.style.display = 'flex';
+  });
+  
+  // Закрыть модальное окно при нажатии на крестик
+  closeModal.addEventListener('click', function() {
+    auditModal.style.display = 'none';
+  });
+  
+  // Закрыть модальное окно при нажатии на фон
+  auditModal.addEventListener('click', function(e) {
+    if (e.target === auditModal) {
+      auditModal.style.display = 'none';
+    }
+  });
+  
+  // Обработка отправки формы
+  const auditForm = document.querySelector('.audit-form');
+  if (auditForm) {
+    auditForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Здесь можно добавить отправку формы на сервер
+      alert('Заявка успешно отправлена! Мы свяжемся с вами в течение 15 минут.');
+      
+      // Очистить форму и закрыть модальное окно
+      auditForm.reset();
+      auditModal.style.display = 'none';
+    });
+  }
+});
+  </script>
+</body>
+</html>
