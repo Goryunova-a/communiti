@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <!-- 🔧 ИСПРАВЛЕНО: добавлено device-width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Контакты | COMMUNITI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Montserrat Alternates', sans-serif;
+      background: #d7e0b5;
+      color: #101010;
+      overflow-x: hidden;
+      min-width: 320px;
+    }
+
+    /* === НАВИГАЦИЯ === */
+    header {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 320px;
+      max-width: 600px;
+      width: calc(100% - 40px);
+      background: linear-gradient(135deg, #333437, #343537);
+      border-radius: 50px;
+      padding: 8px 0;
+      z-index: 1000;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
+      padding: 0 20px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ff7b00;
+      border-radius: 30px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+      z-index: -1;
+    }
+
+    .nav a.active::before,
+    .nav a:hover::before {
+      transform: scaleX(1);
+    }
+
+    .nav a span {
+      position: relative;
+      z-index: 2;
+    }
+
+    .audit-btn {
+      position: fixed;
+      top: 12px;
+      right: 20px;
+      background: #ff7b00;
+      color: #1f2937;
+      border: none;
+      padding: 8px 30px;
+      border-radius: 30px;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 1001;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
+    }
+
+    .audit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 123, 0, 0.5);
+    }
+
+    /* === МОДАЛЬНОЕ ОКНО === */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #333;
+      font-size: 28px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      color: #ff7b00;
+      transform: scale(1.2);
+    }
+
+    .modal h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      color: #000;
+    }
+
+    .modal p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .audit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-group {
+      width: 100%;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #f5f5f5;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.3);
+    }
+
+    .btn-submit {
+      background: #ff7b00;
+      color: #1f2937;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .btn-submit:hover {
+      background: #e69500;
+      transform: translateY(-2px);
+    }
+
+    .form-note {
+      font-size: 12px;
+      color: #777;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    /* === СЕКЦИЯ КОНТАКТЫ === */
+    .contacts-section {
+      min-height: 100vh;
+      padding-top: 80px;
+      position: relative;
+      background: url('services-bg.svg') center/cover no-repeat;
+      background-color: #5a614c00;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contacts-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    .section-content {
+      position: relative;
+      z-index: 2;
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .section-title {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .section-title h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-title p {
+      font-size: 18px;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* === КАРТОЧКА КОНТАКТОВ === */
+    .contact-card {
+      display: flex;
+      gap: 30px;
+      margin-top: 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 1000px;
+      margin: 20px auto 0;
+    }
+
+    .contact-left, .contact-right {
+      flex: 1;
+      padding: 40px;
+      background: rgba(140, 106, 72, 0.9);
+      color: white;
+    }
+
+    .contact-left h2, .contact-right h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      color: #000;
+    }
+
+    .contact-left h2 .orange, .contact-right h2 .orange {
+      color: #ff7b00;
+      font-weight: 700;
+    }
+
+    .contact-info {
+      line-height: 1.8;
+    }
+
+    .contact-info h3 {
+      font-size: 18px;
+      margin: 20px 0 12px;
+      color: #ff7b00;
+      font-weight: 700;
+    }
+
+    .contact-info p {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .contact-info a {
+      color: #ff7b00;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 18px;
+      display: inline-block;
+    }
+
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+
+    .contact-right p {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 25px;
+      color: #000;
+    }
+
+    /* === ФОРМА === */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-form input {
+      width: 100%;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #000;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .contact-form input::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .contact-form input:focus {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.3);
+    }
+
+    .contact-form button {
+      background: #ff7b00;
+      color: #1f2937;
+      border: none;
+      padding: 16px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .contact-form button:hover {
+      background: #e69500;
+      transform: translateY(-2px);
+    }
+
+    /* ========================================
+       🔧 МОБИЛЬНАЯ АДАПТАЦИЯ
+       ======================================== */
+    @media (max-width: 768px) {
+      /* Скрываем десктопную шапку */
+      header, .nav, .audit-btn {
+        display: none !important;
+      }
+
+      /* БУРГЕР КНОПКА */
+      .new-burger-btn {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 24px;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 9999;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .new-burger-btn span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: #fff;
+        border-radius: 2px;
+        transition: 0.3s;
+      }
+
+      .new-burger-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+      .new-burger-btn.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .new-burger-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+
+      /* ВЫДВИЖНОЕ МЕНЮ */
+      .new-mobile-menu {
+        display: flex !important;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 85%;
+        max-width: 300px;
+        height: 100vh;
+        background: linear-gradient(135deg, #333437, #1a1a1a);
+        padding: 80px 24px 24px;
+        z-index: 9998;
+        transition: left 0.3s ease;
+        box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+        overflow-y: auto;
+      }
+
+      .new-mobile-menu.active {
+        left: 0 !important;
+      }
+
+      .new-mobile-menu a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-weight: 600;
+      }
+
+      .menu-audit-btn {
+        margin-top: 30px;
+        background: #ff7b00;
+        color: #000;
+        border: none;
+        padding: 16px;
+        border-radius: 30px;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+        text-transform: uppercase;
+        width: 100%;
+      }
+
+      /* АДАПТАЦИЯ СЕКЦИИ КОНТАКТЫ */
+      .contacts-section {
+        padding-top: 70px !important;
+        background: linear-gradient(135deg, #2a1a0a 0%, #4a3a2a 100%) !important;
+        min-height: auto !important;
+        padding-bottom: 40px !important;
+      }
+
+      .section-content {
+        padding: 20px 16px 40px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .section-title h1 {
+        font-size: 28px !important;
+      }
+
+      .section-title p {
+        font-size: 16px !important;
+      }
+
+      /* Карточка контактов — вертикально */
+      .contact-card {
+        flex-direction: column !important;
+        margin: 20px 0 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .contact-left, .contact-right {
+        padding: 24px 20px !important;
+        width: 100% !important;
+      }
+
+      .contact-left h2, .contact-right h2 {
+        font-size: 24px !important;
+        text-align: center !important;
+        justify-content: center !important;
+      }
+
+      .contact-info h3 {
+        font-size: 17px !important;
+        text-align: center !important;
+      }
+
+      .contact-info p,
+      .contact-info a {
+        font-size: 17px !important;
+        text-align: center !important;
+        display: block !important;
+      }
+
+      .contact-right p {
+        font-size: 16px !important;
+        text-align: center !important;
+      }
+
+      /* Форма — крупные поля */
+      .contact-form input {
+        padding: 18px 20px !important;
+        font-size: 17px !important;
+      }
+
+      .contact-form button {
+        padding: 18px 24px !important;
+        font-size: 17px !important;
+        font-weight: 700 !important;
+      }
+
+      /* Модальное окно */
+      .modal-content {
+        padding: 30px 20px !important;
+        margin: 10px;
+      }
+
+      .modal h2 {
+        font-size: 24px !important;
+      }
+
+      .modal p {
+        font-size: 14px !important;
+      }
+
+      .form-group input,
+      .btn-submit {
+        font-size: 16px !important;
+        padding: 14px !important;
+      }
+    }
+
+    /* На десктопе скрываем мобильные элементы */
+    @media (min-width: 769px) {
+      .new-burger-btn,
+      .new-mobile-menu {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🔧 БУРГЕР КНОПКА -->
+  <div class="new-burger-btn" id="newBurger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- 🔧 МОБИЛЬНОЕ МЕНЮ -->
+  <div class="new-mobile-menu" id="newMobileMenu">
+    <a href="index.html">Главная</a>
+    <a href="services.html">Услуги</a>
+    <a href="cases.html">Кейсы</a>
+    <a href="calculator.html">Калькулятор</a>
+    <a href="about.html">О нас</a>
+    <a href="contacts.html">Контакты</a>
+    <button class="menu-audit-btn" onclick="document.getElementById('auditModal').style.display='flex'">АУДИТ</button>
+  </div>
+
+  <!-- КНОПКА АУДИТ -->
+  <button id="audit-btn" class="audit-btn">АУДИТ</button>
+
+  <!-- МОДАЛЬНОЕ ОКНО (одна копия!) -->
+  <div id="auditModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2>Заказать аудит</h2>
+      <p>Оставьте заявку, и мы свяжемся с вами в течение 15 минут</p>
+      
+      <form class="audit-form">
+        <div class="form-group">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+        </div>
+        <div class="form-group">
+          <input type="tel" name="phone" placeholder="Ваш телефон" required>
+        </div>
+        <button type="submit" class="btn-submit">Заказать аудит</button>
+        <p class="form-note">Нажимая кнопку, вы даете согласие на обработку персональных данных</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ШАПКА -->
+  <header>
+    <div class="nav">
+      <a href="index.html">Главная</a>
+      <a href="services.html">Услуги</a>
+      <a href="cases.html">Кейсы</a>
+      <a href="calculator.html">Калькулятор</a>
+      <a href="about.html">О нас</a>
+      <a href="#" class="active">Контакты</a>
+    </div>
+  </header>
+
+  <!-- СЕКЦИЯ КОНТАКТЫ -->
+  <section id="contacts" class="contacts-section">
+    <div class="section-content">
+      <!-- Заголовок -->
+      <div class="section-title">
+        <h1>Контакты</h1>
+        <p>Свяжитесь с нами — ответим в течение 15 минут</p>
+      </div>
+
+      <!-- Основная карточка с контактной информацией -->
+      <div class="contact-card">
+        <!-- Левая часть -->
+        <div class="contact-left">
+          <h2>Всегда <span class="orange">на связи</span></h2>
+          <div class="contact-info">
+            <h3>Контактная информация</h3>
+            <p><a href="tel:+79041621642">+7 (904) 162 16 42</a></p>
+            
+            <h3>Соцсети</h3>
+            <p><a href="https://vk.com/your_community" target="_blank">Группа в VK</a></p>
+            <p><a href="https://t.me/your_telegram" target="_blank">Telegram</a></p>
+            
+            <h3>Рабочее время</h3>
+            <p>Пн-Пт: 9:00-19:00<br>Сб-Вс: выходные</p>
+          </div>
+        </div>
+
+        <!-- Правая часть -->
+        <div class="contact-right">
+          <h2>Мы <span class="orange">перезвоним</span></h2>
+          <p style="text-align:center;">Просто оставьте номер</p>
+          
+          <form class="contact-form" id="contactForm">
+            <input type="text" name="name" placeholder="Имя" required>
+            <input type="tel" name="phone" placeholder="Номер" required>
+            <button type="submit" class="btn-submit">Оставить заявку</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // === МОДАЛЬНОЕ ОКНО ===
+      const auditBtn = document.getElementById('audit-btn');
+      const auditModal = document.getElementById('auditModal');
+      const closeModal = document.querySelector('.modal-close');
+      const auditForm = document.querySelector('.audit-form');
+
+      // Открытие модального окна
+      if (auditBtn) {
+        auditBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          auditModal.style.display = 'flex';
+        });
+      }
+
+      // Закрытие модального окна
+      if (closeModal) {
+        closeModal.addEventListener('click', function() {
+          auditModal.style.display = 'none';
+        });
+      }
+
+      if (auditModal) {
+        auditModal.addEventListener('click', function(e) {
+          if (e.target === auditModal) {
+            auditModal.style.display = 'none';
+          }
+        });
+      }
+
+      // Отправка формы аудита
+      if (auditForm) {
+        auditForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const formData = {
+            name: auditForm.querySelector('input[name="name"]').value,
+            phone: auditForm.querySelector('input[name="phone"]').value,
+            type: 'audit'
+          };
+
+          try {
+            const response = await fetch('/api/submit-request', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+              alert('✅ Заявка отправлена! Мы свяжемся с вами в течение 15 минут.');
+              auditForm.reset();
+              auditModal.style.display = 'none';
+            } else {
+              alert('❌ Ошибка: ' + (result.error || 'Неизвестная ошибка'));
+            }
+          } catch (error) {
+            console.error('Ошибка:', error);
+            alert('⚠️ Не удалось отправить заявку. Попробуйте позже.');
+          }
+        });
+      }
+
+      // === ФОРМА КОНТАКТОВ ===
+      const contactForm = document.getElementById('contactForm');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const formData = {
+            name: contactForm.querySelector('input[name="name"]').value,
+            phone: contactForm.querySelector('input[name="phone"]').value,
+            type: 'callback'
+          };
+
+          try {
+            const response = await fetch('/api/submit-request', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+              alert('✅ Спасибо! Мы перезвоним вам в течение 15 минут.');
+              contactForm.reset();
+            } else {
+              alert('❌ Ошибка: ' + (result.error || 'Неизвестная ошибка'));
+            }
+          } catch (error) {
+            console.error('Ошибка:', error);
+            alert('⚠️ Не удалось отправить заявку. Попробуйте позже.');
+          }
+        });
+      }
+
+      // === БУРГЕР МЕНЮ ===
+      const burgerBtn = document.getElementById('newBurger');
+      const mobileMenu = document.getElementById('newMobileMenu');
+
+      if (burgerBtn && mobileMenu) {
+        burgerBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          burgerBtn.classList.toggle('active');
+          mobileMenu.classList.toggle('active');
+          document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function() {
+            burgerBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+          });
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!mobileMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+            burgerBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
