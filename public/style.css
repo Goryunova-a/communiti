@@ -772,7 +772,7 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0);
   z-index: 1;
 }
 
@@ -1350,9 +1350,40 @@ header {
     width: 90%;
   }
 
-  /* Исправление фона для главной секции */
+
+}
+/* 🔧 МОБИЛЬНАЯ ВЕРСИЯ — ОТДЕЛЬНЫЙ ФОН */
+@media (max-width: 768px) {
   .hero {
-    background: url('phone.svg') center/cover no-repeat !important;
-    min-height: 100vh;
+    /* Замените 'mobile-bg.svg' на ваш файл для мобильной версии */
+    background: url('phone-bg.svg') center/cover no-repeat !important;
+    
+    /* ИЛИ используйте градиент вместо картинки: */
+    /* background: linear-gradient(135deg, #1a0808 0%, #2a1a0a 50%, #3a2a1a 100%) !important; */
+    
+    /* ИЛИ комбинация градиента и картинки: */
+    /* background: linear-gradient(135deg, rgba(26, 8, 8, 0.8) 0%, rgba(42, 26, 10, 0.9) 100%), 
+                  url('mobile-bg.jpg') center/cover no-repeat !important; */
+    
+    min-height: 100vh !important;
+    padding-top: 80px !important;
+  }
+  
+  /* Если нужно затемнение фона */
+  .hero::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.4) !important; /* Затемнение 40% */
+    z-index: 1 !important;
+  }
+  
+  /* Контент поверх фона */
+  .hero > * {
+    position: relative !important;
+    z-index: 2 !important;
   }
 }
