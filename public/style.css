@@ -2038,3 +2038,48 @@ header {
     font-size: 16px !important;
   }
 }
+
+/* === ВОЗВРАЩАЕМ СТРЕЛКИ ДЛЯ ДЕСКТОПА === */
+@media (min-width: 769px) {
+  /* Разрешаем контейнеру показывать элементы за своими границами */
+  .book-pages {
+    position: relative !important;
+    overflow: visible !important;
+  }
+
+  .page-arrow {
+    display: flex !important; /* Принудительно показываем */
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 50%;
+    color: #333;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  .page-arrow:hover {
+    background: #ff7b00;
+    border-color: #ff7b00;
+    color: #fff;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .page-arrow.prev {
+    left: -24px;
+  }
+
+  .page-arrow.next {
+    right: -24px;
+  }
+}
