@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <!-- 🔧 ИСПРАВЛЕНО: добавлено device-width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Контакты | COMMUNITI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Montserrat Alternates', sans-serif;
+      background: #d7e0b5;
+      color: #10101000;
+      overflow-x: hidden;
+      min-width: 320px;
+    }
+
+    /* === НАВИГАЦИЯ === */
+    header {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 320px;
+      max-width: 600px;
+      width: calc(100% - 40px);
+      background: linear-gradient(135deg, #333437, #343537);
+      border-radius: 50px;
+      padding: 8px 0;
+      z-index: 1000;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
+      padding: 0 20px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ff7b00;
+      border-radius: 30px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+      z-index: -1;
+    }
+
+    .nav a.active::before,
+    .nav a:hover::before {
+      transform: scaleX(1);
+    }
+
+    .nav a span {
+      position: relative;
+      z-index: 2;
+    }
+
+    .audit-btn {
+      position: fixed;
+      top: 12px;
+      right: 20px;
+      background: #ff7b00;
+      color: #1f2937;
+      border: none;
+      padding: 8px 30px;
+      border-radius: 30px;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 1001;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
+    }
+
+    .audit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 123, 0, 0.5);
+    }
+
+    /* === МОДАЛЬНОЕ ОКНО === */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #333;
+      font-size: 28px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      color: #ff7b00;
+      transform: scale(1.2);
+    }
+
+    .modal h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      color: #000;
+    }
+
+    .modal p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .audit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-group {
+      width: 100%;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #f5f5f5;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.3);
+    }
+
+    .btn-submit {
+      background: #ff7b00;
+      color: #1f2937;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .btn-submit:hover {
+      background: #e69500;
+      transform: translateY(-2px);
+    }
+
+    .form-note {
+      font-size: 12px;
+      color: #777;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    /* === СОВРЕМЕННЫЙ ДИЗАЙН КОНТАКТОВ === */
+.contacts-section {
+  min-height: 100vh;
+  padding: 100px 20px 60px;
+  background: linear-gradient(135deg, #f5f1e6 0%, #e8d9c5 100%);
+}
+
+.contacts-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-header h1 {
+  font-size: 48px;
+  font-weight: 800;
+  color: #2d3748;
+  margin-bottom: 16px;
+  position: relative;
+  display: inline-block;
+}
+
+.section-header h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #ff7b00;
+  border-radius: 2px;
+}
+
+.section-header p {
+  font-size: 20px;
+  color: #718096;
+  margin-top: 20px;
+}
+
+/* Сетка контактов */
+.contacts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Карточка с информацией */
+.contact-info-card,
+.contact-form-card {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-info-card:hover,
+.contact-form-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.12);
+}
+
+.contact-info-card h2,
+.contact-form-card h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 30px;
+}
+
+.contact-form-card p {
+  color: #718096;
+  margin-bottom: 30px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Элементы контактов */
+.contact-item {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  background: #edf2f7;
+  transform: translateX(5px);
+}
+
+.contact-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #ff7b00 0%, #ff9500 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.contact-details h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #718096;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contact-details a,
+.contact-details p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-details a:hover {
+  color: #ff7b00;
+}
+
+/* Социальные сети */
+.social-links {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #e2e8f0;
+}
+
+.social-links h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #718096;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-btn.vk {
+  background: #ff7b00;
+  color: white;
+}
+
+.social-btn.vk:hover {
+  background: #ff7b00;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px #ff7b006d(74, 118, 168, 0.3);
+}
+
+.social-btn.telegram {
+  background: #ff7b00;
+  color: white;
+}
+
+.social-btn.telegram:hover {
+  background: #ff7b00;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px #ff7b006d(0, 136, 204, 0.3);
+}
+
+/* Форма */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 18px 24px;
+  border: 2px solid #ff7b006d;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #ff7b00;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(255, 123, 0, 0.1);
+}
+
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #ff7b00 0%, #ff9500 100%);
+  color: white;
+  border: none;
+  padding: 20px 32px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 10px 30px rgba(255, 123, 0, 0.3);
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(255, 123, 0, 0.4);
+}
+
+.btn-submit svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-submit:hover svg {
+  transform: translateX(5px);
+}
+
+/* Адаптивность */
+@media (max-width: 968px) {
+  .contacts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-header h1 {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contacts-section {
+    padding: 80px 16px 40px;
+  }
+  
+  .contact-info-card,
+  .contact-form-card {
+    padding: 24px;
+  }
+  
+  .contact-item {
+    padding: 16px;
+  }
+  
+  .social-btn {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+}
+
+
+    /* ========================================
+       🔧 МОБИЛЬНАЯ АДАПТАЦИЯ
+       ======================================== */
+    @media (max-width: 768px) {
+      /* Скрываем десктопную шапку */
+      header, .nav, .audit-btn {
+        display: none !important;
+      }
+
+      /* БУРГЕР КНОПКА */
+      .new-burger-btn {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 24px;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 9999;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .new-burger-btn span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: #fff;
+        border-radius: 2px;
+        transition: 0.3s;
+      }
+
+      .new-burger-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+      .new-burger-btn.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .new-burger-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+
+      /* ВЫДВИЖНОЕ МЕНЮ */
+      .new-mobile-menu {
+        display: flex !important;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 85%;
+        max-width: 300px;
+        height: 100vh;
+        background: linear-gradient(135deg, #333437, #1a1a1a);
+        padding: 80px 24px 24px;
+        z-index: 9998;
+        transition: left 0.3s ease;
+        box-shadow: 5px 0 20px rgba(0,0,0,0.5);
+        overflow-y: auto;
+      }
+
+      .new-mobile-menu.active {
+        left: 0 !important;
+      }
+
+      .new-mobile-menu a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-weight: 600;
+      }
+
+      .menu-audit-btn {
+        margin-top: 30px;
+        background: #ff7b00;
+        color: #000;
+        border: none;
+        padding: 16px;
+        border-radius: 30px;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+        text-transform: uppercase;
+        width: 100%;
+      }
+
+      /* АДАПТАЦИЯ СЕКЦИИ КОНТАКТЫ */
+      .contacts-section {
+        padding-top: 70px !important;
+        background: linear-gradient(135deg, #2a1a0a 0%, #4a3a2a 100%) !important;
+        min-height: auto !important;
+        padding-bottom: 40px !important;
+      }
+
+      .section-content {
+        padding: 20px 16px 40px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .section-title h1 {
+        font-size: 28px !important;
+      }
+
+      .section-title p {
+        font-size: 16px !important;
+      }
+
+      /* Карточка контактов — вертикально */
+      .contact-card {
+        flex-direction: column !important;
+        margin: 20px 0 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .contact-left, .contact-right {
+        padding: 24px 20px !important;
+        width: 100% !important;
+      }
+
+      .contact-left h2, .contact-right h2 {
+        font-size: 24px !important;
+        text-align: center !important;
+        justify-content: center !important;
+      }
+
+      .contact-info h3 {
+        font-size: 17px !important;
+        text-align: center !important;
+      }
+
+      .contact-info p,
+      .contact-info a {
+        font-size: 17px !important;
+        text-align: center !important;
+        display: block !important;
+      }
+
+      .contact-right p {
+        font-size: 16px !important;
+        text-align: center !important;
+      }
+
+      /* Форма — крупные поля */
+      .contact-form input {
+        padding: 18px 20px !important;
+        font-size: 17px !important;
+      }
+
+      .contact-form button {
+        padding: 18px 24px !important;
+        font-size: 17px !important;
+        font-weight: 700 !important;
+      }
+
+      /* Модальное окно */
+      .modal-content {
+        padding: 30px 20px !important;
+        margin: 10px;
+      }
+
+      .modal h2 {
+        font-size: 24px !important;
+      }
+
+      .modal p {
+        font-size: 14px !important;
+      }
+
+      .form-group input,
+      .btn-submit {
+        font-size: 16px !important;
+        padding: 14px !important;
+      }
+    }
+
+    /* На десктопе скрываем мобильные элементы */
+    @media (min-width: 769px) {
+      .new-burger-btn,
+      .new-mobile-menu {
+        display: none !important;
+      }
+    }
+
+    /* === СТИЛИ ДЛЯ ЧЕКБОКСА ПДН === */
+.pd-agreement {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.pd-checkbox {
+  display: flex;
+  align-items: flex-start; /* Текст сверху, если не влезает в строку */
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #666; /* Серый текст по умолчанию */
+}
+
+/* Скрываем стандартный чекбокс */
+.pd-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+/* Рисуем свою галочку */
+.pd-checkmark {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 2px solid #777;
+  border-radius: 4px;
+  margin-right: 10px;
+  margin-top: 2px;
+  flex-shrink: 0; /* Чтобы квадрат не сплющивался */
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* Эффект при нажатии (галочка) */
+.pd-checkmark::after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Когда чекбокс выбран */
+.pd-checkbox input:checked ~ .pd-checkmark {
+  background: #ff7b00; /* Ваш оранжевый */
+  border-color: #ff7b00;
+}
+
+.pd-checkbox input:checked ~ .pd-checkmark::after {
+  display: block;
+}
+
+/* Ссылка на политику */
+.pd-link {
+  color: #ff7b00;
+  text-decoration: underline;
+}
+
+.pd-link:hover {
+  text-decoration: none;
+}
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 480px) {
+  .pd-checkbox {
+    font-size: 12px;
+  }
+}
+  </style>
+</head>
+
+<body>
+  <!-- 🔧 БУРГЕР КНОПКА -->
+  <div class="new-burger-btn" id="newBurger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- 🔧 МОБИЛЬНОЕ МЕНЮ -->
+  <div class="new-mobile-menu" id="newMobileMenu">
+    <a href="index.html">Главная</a>
+    <a href="services.html">Услуги</a>
+    <a href="cases.html">Кейсы</a>
+    <a href="calculator.html">Калькулятор</a>
+    <a href="about.html">О нас</a>
+    <a href="contacts.html">Контакты</a>
+    <button class="menu-audit-btn" onclick="document.getElementById('auditModal').style.display='flex'">АУДИТ</button>
+  </div>
+
+  <!-- КНОПКА АУДИТ -->
+  <button id="audit-btn" class="audit-btn">АУДИТ</button>
+
+  <!-- МОДАЛЬНОЕ ОКНО (одна копия!) -->
+  <div id="auditModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2>Заказать аудит</h2>
+      <p>Оставьте заявку, и мы свяжемся с вами в течение 15 минут</p>
+      
+      <form class="audit-form">
+        <div class="form-group">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+        </div>
+        <div class="form-group">
+          <input type="tel" name="phone" placeholder="Ваш телефон" required>
+        </div>
+        <button type="submit" class="btn-submit">Заказать аудит</button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- ШАПКА -->
+  <header>
+    <div class="nav">
+      <a href="index.html">Главная</a>
+      <a href="services.html">Услуги</a>
+      <a href="cases.html">Кейсы</a>
+      <a href="calculator.html">Калькулятор</a>
+      <a href="about.html">О нас</a>
+      <a href="#" class="active">Контакты</a>
+    </div>
+  </header>
+
+  <!-- СЕКЦИЯ КОНТАКТЫ -->
+  <section id="contacts" class="contacts-section">
+  <div class="contacts-container">
+    
+    <!-- Заголовок -->
+    <div class="section-header">
+      <h1>Контакты</h1>
+      <p>Свяжитесь с нами — ответим в течение 15 минут</p>
+    </div>
+
+    <div class="contacts-grid">
+      
+      <!-- Левая колонка - Контактная информация -->
+      <div class="contact-info-card">
+        <h2>Давайте обсудим ваш проект</h2>
+        
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7V22z"/>
+            </svg>
+          </div>
+          <div class="contact-details">
+            <h3>Телефон</h3>
+            <a href="tel:+79041621642">+7 (904) 162 16 42</a>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="contact-details">
+            <h3>Режим работы</h3>
+            <p>Пн-Пт: 9:00 - 19:00<br>Сб-Вс: выходные</p>
+          </div>
+        </div>
+
+        <div class="social-links">
+          <h3>Мы в соцсетях</h3>
+<!-- Социальные сети -->
+<div class="contact-item">
+  <div class="contact-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+    </svg>
+  </div>
+  <div class="contact-details">
+    <h3>Социальные сети</h3>
+    
+    <!-- ВКонтакте -->
+    <p>
+      <a href="https://vk.com/smm_community20" target="_blank" class="contact-link">
+        <span class="link-icon vk">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 13.109h-1.57c-.595 0-.773.476-1.848 1.517-1.31 1.175-1.877 1.31-2.472 1.31-.297 0-.742-.134-.742-.512v-3.337c0-.54.162-.646.71-.646h1.094c.393 0 .538-.18.538-.594v-3.14c0-.413-.134-.538-.538-.538h-1.72c-.44 0-.566.207-.566.54v2.076c0 .305-.135.431-.386.431-.28 0-.964-.135-1.876-1.392-.76-1.066-1.29-2.25-1.29-2.25-.135-.305-.386-.413-.783-.413H7.356c-.44 0-.538.207-.538.54 0 .566.733 3.39 3.417 6.342 1.793 2.005 4.07 2.95 6.22 2.95 1.3 0 1.463-.297 1.463-.809v-1.867c0-.467.101-.566.44-.566z"/>
+          </svg>
+        </span>
+        Группа в VK
+      </a>
+    </p>
+    
+    <!-- Telegram -->
+    <p>
+      <a href="https://t.me/d_impa" target="_blank" class="contact-link">
+        <span class="link-icon telegram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+          </svg>
+        </span>
+        Telegram
+      </a>
+    </p>
+    
+  </div>
+</div>
+
+      <!-- Правая колонка - Форма -->
+      <div class="contact-form-card">
+        <h2>Мы перезвоним</h2>
+        <p>Оставьте ваши контакты — мы свяжемся с вами в ближайшее время</p>
+        
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <input type="text" name="name" placeholder="Ваше имя" required>
+          </div>
+          
+          <div class="form-group">
+            <input type="tel" name="phone" placeholder="Ваш телефон" required>
+          </div>
+
+          <!-- Чекбокс согласия -->
+          <div class="pd-agreement">
+            <label class="pd-checkbox">
+              <input type="checkbox" id="pd-consent" required>
+              <span class="pd-checkmark"></span>
+              <span class="pd-text">
+                Я даю согласие на <a href="#" class="pd-link">обработку персональных данных</a>
+              </span>
+            </label>
+          </div>
+          
+          <button type="submit" class="btn-submit">
+            Оставить заявку
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // === МОДАЛЬНОЕ ОКНО ===
+      const auditBtn = document.getElementById('audit-btn');
+      const auditModal = document.getElementById('auditModal');
+      const closeModal = document.querySelector('.modal-close');
+      const auditForm = document.querySelector('.audit-form');
+
+      // Открытие модального окна
+      if (auditBtn) {
+        auditBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          auditModal.style.display = 'flex';
+        });
+      }
+
+      // Закрытие модального окна
+      if (closeModal) {
+        closeModal.addEventListener('click', function() {
+          auditModal.style.display = 'none';
+        });
+      }
+
+      if (auditModal) {
+        auditModal.addEventListener('click', function(e) {
+          if (e.target === auditModal) {
+            auditModal.style.display = 'none';
+          }
+        });
+      }
+
+      // Отправка формы аудита
+      if (auditForm) {
+        auditForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const formData = {
+            name: auditForm.querySelector('input[name="name"]').value,
+            phone: auditForm.querySelector('input[name="phone"]').value,
+            type: 'audit'
+          };
+
+          try {
+            const response = await fetch('/api/submit-request', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+              alert('✅ Заявка отправлена! Мы свяжемся с вами в течение 15 минут.');
+              auditForm.reset();
+              auditModal.style.display = 'none';
+            } else {
+              alert('❌ Ошибка: ' + (result.error || 'Неизвестная ошибка'));
+            }
+          } catch (error) {
+            console.error('Ошибка:', error);
+            alert('⚠️ Не удалось отправить заявку. Попробуйте позже.');
+          }
+        });
+      }
+
+      // === ФОРМА КОНТАКТОВ ===
+      const contactForm = document.getElementById('contactForm');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const formData = {
+            name: contactForm.querySelector('input[name="name"]').value,
+            phone: contactForm.querySelector('input[name="phone"]').value,
+            type: 'callback'
+          };
+
+          try {
+            const response = await fetch('/api/submit-request', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+              alert('✅ Спасибо! Мы перезвоним вам в течение 15 минут.');
+              contactForm.reset();
+            } else {
+              alert('❌ Ошибка: ' + (result.error || 'Неизвестная ошибка'));
+            }
+          } catch (error) {
+            console.error('Ошибка:', error);
+            alert('⚠️ Не удалось отправить заявку. Попробуйте позже.');
+          }
+        });
+      }
+
+      // === БУРГЕР МЕНЮ ===
+      const burgerBtn = document.getElementById('newBurger');
+      const mobileMenu = document.getElementById('newMobileMenu');
+
+      if (burgerBtn && mobileMenu) {
+        burgerBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          burgerBtn.classList.toggle('active');
+          mobileMenu.classList.toggle('active');
+          document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', function() {
+            burgerBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+          });
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!mobileMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+            burgerBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      }
+    });
+    // === ПРОВЕРКА ГАЛОЧКИ ПЕРЕД ОТПРАВКОЙ ===
+document.querySelectorAll('form').forEach(form => {
+  form.addEventListener('submit', function(e) {
+    // Находим чекбокс внутри этой формы
+    const checkbox = this.querySelector('#pd-consent');
+    
+    // Если чекбокс есть И он не отмечен
+    if (checkbox && !checkbox.checked) {
+      e.preventDefault(); // Останавливаем отправку
+      alert('Пожалуйста, подтвердите согласие на обработку данных.');
+      
+      // Визуальная подсказка (тряска или подсветка)
+      checkbox.parentElement.style.color = '#ff0000';
+      setTimeout(() => {
+        checkbox.parentElement.style.color = '#666';
+      }, 2000);
+    }
+  });
+});
+  </script>
+  
+</body>
+</html>
