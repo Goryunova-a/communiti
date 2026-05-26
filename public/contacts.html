@@ -381,25 +381,25 @@
 }
 
 .social-btn.vk {
-  background: #4a76a8;
+  background: #ff7b00;
   color: white;
 }
 
 .social-btn.vk:hover {
-  background: #3d6491;
+  background: #ff7b00;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(74, 118, 168, 0.3);
+  box-shadow: 0 8px 20px #ff7b006d(74, 118, 168, 0.3);
 }
 
 .social-btn.telegram {
-  background: #0088cc;
+  background: #ff7b00;
   color: white;
 }
 
 .social-btn.telegram:hover {
-  background: #0077b3;
+  background: #ff7b00;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 136, 204, 0.3);
+  box-shadow: 0 8px 20px #ff7b006d(0, 136, 204, 0.3);
 }
 
 /* Форма */
@@ -412,7 +412,7 @@
 .form-group input {
   width: 100%;
   padding: 18px 24px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #ff7b006d;
   border-radius: 12px;
   font-size: 16px;
   transition: all 0.3s ease;
@@ -677,6 +677,82 @@
         display: none !important;
       }
     }
+
+    /* === СТИЛИ ДЛЯ ЧЕКБОКСА ПДН === */
+.pd-agreement {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.pd-checkbox {
+  display: flex;
+  align-items: flex-start; /* Текст сверху, если не влезает в строку */
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #666; /* Серый текст по умолчанию */
+}
+
+/* Скрываем стандартный чекбокс */
+.pd-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+/* Рисуем свою галочку */
+.pd-checkmark {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 2px solid #777;
+  border-radius: 4px;
+  margin-right: 10px;
+  margin-top: 2px;
+  flex-shrink: 0; /* Чтобы квадрат не сплющивался */
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* Эффект при нажатии (галочка) */
+.pd-checkmark::after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Когда чекбокс выбран */
+.pd-checkbox input:checked ~ .pd-checkmark {
+  background: #ff7b00; /* Ваш оранжевый */
+  border-color: #ff7b00;
+}
+
+.pd-checkbox input:checked ~ .pd-checkmark::after {
+  display: block;
+}
+
+/* Ссылка на политику */
+.pd-link {
+  color: #ff7b00;
+  text-decoration: underline;
+}
+
+.pd-link:hover {
+  text-decoration: none;
+}
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 480px) {
+  .pd-checkbox {
+    font-size: 12px;
+  }
+}
   </style>
 </head>
 
@@ -971,6 +1047,26 @@
         });
       }
     });
+    // === ПРОВЕРКА ГАЛОЧКИ ПЕРЕД ОТПРАВКОЙ ===
+document.querySelectorAll('form').forEach(form => {
+  form.addEventListener('submit', function(e) {
+    // Находим чекбокс внутри этой формы
+    const checkbox = this.querySelector('#pd-consent');
+    
+    // Если чекбокс есть И он не отмечен
+    if (checkbox && !checkbox.checked) {
+      e.preventDefault(); // Останавливаем отправку
+      alert('Пожалуйста, подтвердите согласие на обработку данных.');
+      
+      // Визуальная подсказка (тряска или подсветка)
+      checkbox.parentElement.style.color = '#ff0000';
+      setTimeout(() => {
+        checkbox.parentElement.style.color = '#666';
+      }, 2000);
+    }
+  });
+});
   </script>
+  
 </body>
 </html>
